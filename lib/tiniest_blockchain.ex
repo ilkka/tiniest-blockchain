@@ -1,18 +1,12 @@
 defmodule TiniestBlockchain do
-  @moduledoc """
-  Documentation for TiniestBlockchain.
-  """
+  def start(_type, _args) do
+    dispatch = build_dispatch()
+    {:ok, _} = :cowboy.start_clear(:http, [{:port, 8080}], %{:env => %{:dispatch => dispatch}})
+  end
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> TiniestBlockchain.hello
-      :world
-
-  """
-  def hello do
-    :world
+  def build_dispatch() do
+    :cowboy_router.compile([
+      {:_, [{"/transaction", Handlers.TransactionHandler, []}]}
+    ])
   end
 end
