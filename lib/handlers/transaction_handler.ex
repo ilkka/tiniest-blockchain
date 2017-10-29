@@ -12,8 +12,11 @@ defmodule Handlers.TransactionHandler do
       if :cowboy_req.has_body(req) do
         {:ok, body, req} = :cowboy_req.read_body(req)
         new_tx = Poison.decode!(body)
-        Logger.info(inspect(new_tx))
-        :cowboy_req.reply(200, %{"content-type" => "text/plain"}, "morjesta", req)
+        if ExJsonSchema.Validator.valid?(Schemata.Transaction.schema, new_tx) do
+          :cowboy_req.reply(200, %{"content-type" => "text/plain"}, "morjesta", req)
+        else
+          :cowboy_req.reply(400, %{"content-type" => "text/plain"}, "bad transaction", req)
+        end
       else
         :cowboy_req.reply(400, %{"content-type" => "text/plain"}, "not a transaction", req)
       end
