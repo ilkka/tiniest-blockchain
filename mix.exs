@@ -15,14 +15,15 @@ defmodule TiniestBlockchain.Mixfile do
   def application do
     [
       mod: {TiniestBlockchain, []},
-      extra_applications: [:logger, :cowboy, :ranch]
+      extra_applications: [:logger, :cowboy, :plug]
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:cowboy, "~> 2.0"},
+      {:cowboy, "~> 1.0"},
+      {:plug, "~> 1.0"},
       {:poison, "~> 3.1"},
       {:ex_json_schema, "~> 0.5"}
     ]

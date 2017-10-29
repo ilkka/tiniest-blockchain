@@ -1,33 +1,20 @@
 defmodule Handlers.TransactionHandler do
   require Logger
+  use Plug.Router
 
-  def init(req, state) do
-    handle(req, state)
-  end
+  plug Plug.Parsers, parsers: [:json], pass: ["application/json"], json_decoder: Poison
+  plug :match
+  plug :dispatch
 
-  def handle(%{:method => "POST"} = req, state) do
+  post "/" do
     Logger.info("Handling transaction POST request")
 
-    reply =
-      if :cowboy_req.has_body(req) do
-        {:ok, body, req} = :cowboy_req.read_body(req)
-        new_tx = Poison.decode!(body)
-        if ExJsonSchema.Validator.valid?(Schemata.Transaction.schema, new_tx) do
-          :ok = TransactionList.push(new_tx)
-          :cowboy_req.reply(200, %{"content-type" => "text/plain"}, "accepted", req)
-        else
-          :cowboy_req.reply(400, %{"content-type" => "text/plain"}, "bad transaction", req)
-        end
-      else
-        :cowboy_req.reply(400, %{"content-type" => "text/plain"}, "not a transaction", req)
-      end
-
-    {:ok, reply, state}
-  end
-
-  def handle(req, state) do
-    Logger.info("Handling other transaction request")
-    reply = :cowboy_req.reply(404, %{"content-type" => "text/plain"}, "not found", req)
-    {:ok, reply, state}
+    new_tx = conn.body_params
+    if ExJsonSchema.Validator.valid?(Schemata.Transaction.schema, new_tx) do
+      :ok = TransactionList.push(new_tx)
+      send_resp(conn, 200, "accepted")
+    else
+      send_resp(conn, 400, "bad transaction")
+    end
   end
 end
