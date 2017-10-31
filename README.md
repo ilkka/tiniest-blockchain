@@ -1,19 +1,12 @@
-# TiniestBlockchain
+# Tiniest Blockchain
 
-**TODO: Add description**
+This is an implementation of [the Tiniest Blockchain](https://medium.com/crypto-currently/lets-build-the-tiniest-blockchain-e70965a248be) by [Gerald Nash](http://www.aunyks.com/), in Elixir, ported as best I know how by [github.com/ilkka](https://github.com/ilkka). This is a vehicle for me to learn Elixir better, mostly.
 
-## Installation
+## Usage
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `tiniest_blockchain` to your list of dependencies in `mix.exs`:
+I'm only up to the middle of the second article in the series so... :D Anyway, I guess this will have an HTTP interface that you can call to post transactions. Annnnd... probably some method for synchronising state. More on that later.
 
-```elixir
-def deps do
-  [
-    {:tiniest_blockchain, "~> 0.1.0"}
-  ]
-end
-```
+
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
