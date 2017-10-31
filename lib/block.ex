@@ -3,7 +3,7 @@ defmodule Block do
   Blocks in the tiniest blockchain.
   """
 
-  defstruct index: 0, timestamp: "", data: "", previous_hash: "0", hash: "0"
+  defstruct index: 0, timestamp: "", data: %{proof_of_work: 13, transactions: []}, previous_hash: "0", hash: "0"
 
   @doc """
   Generate the Genesis block.
@@ -20,7 +20,7 @@ defmodule Block do
 
   """
   def genesis() do
-    %Block{} |> hash
+    %Block{timestamp: timestamp_now()} |> hash
   end
 
   @doc """
@@ -57,7 +57,7 @@ defmodule Block do
       | hash: :crypto.hash(:sha256, [
                 block.index,
                 block.timestamp,
-                block.data,
+                inspect(block.data),
                 block.previous_hash
               ])
               |> Base.encode16()

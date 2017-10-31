@@ -8,6 +8,10 @@ defmodule TiniestBlockchain do
         id: TransactionList,
         start: {TransactionList, :start_link, [[]]}
       },
+      %{
+        id: Blockchain,
+        start: {Blockchain, :start_link, [[Block.genesis()]]}
+      },
       # %{
       #   id: HttpServer,
       #   start: {:cowboy, :start_clear, [:http, [{:port, 8080}], %{:env => %{:dispatch => dispatch}}]}

@@ -1,4 +1,6 @@
-defmodule Schemata.Transaction do
+defmodule Transaction do
+  defstruct from: "", to: "", amount: 0
+
   @schema %{
       "type" => "object",
       "properties" => %{
