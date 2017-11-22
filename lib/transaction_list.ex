@@ -4,6 +4,14 @@ defmodule TransactionList do
   end
 
   def push(transaction) do
-    Agent.update(TxList, fn(state) -> [transaction | state] end)
+    Agent.update(TxList, fn(state) ->
+      txs = [transaction | state]
+      if length(txs) > 9 do
+        Blockchain.mine(txs)
+        []
+      else
+        txs
+      end
+    end)
   end
 end
